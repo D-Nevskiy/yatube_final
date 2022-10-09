@@ -10,10 +10,10 @@ class PostForm(forms.ModelForm):
                       'group': 'Выберите группу'}
         fields = ('text', 'group', 'image')
 
+
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         labels = {'text': 'Тeкст комментария'}
         help_texts = {'text': 'Введите текст комментария'}
         fields = ('text',)
-

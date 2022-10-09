@@ -67,7 +67,7 @@ class PostFormTests(TestCase):
             text='Тестовый текст',
             group=self.group.id,
             author=self.user,
-            image=f'posts/small.gif'
+            image='posts/small.gif'
         ).exists())
         self.assertEqual(Post.objects.count(), posts_count + 1)
 
