@@ -11,3 +11,7 @@ def csrf_failure(request, reason=''):
 
 def page_500(request):
     return render(request, 'core/505.html')
+
+
+def page_403(request):
+    return render(request, 'core/403.html')

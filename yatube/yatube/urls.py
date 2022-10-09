@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 
 handler404 = 'core.views.page_not_found'
 handler500 = 'core.views.page_500'
+handler403 = 'core.views.page_403'
 
 urlpatterns = [
     path('', include('posts.urls', namespace='posts')),
