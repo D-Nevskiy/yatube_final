@@ -218,15 +218,13 @@ class FollowTest(TestCase):
         self.assertEqual(follow_count, new2_count_follow)
 
     def test_follower_post(self):
-        Post.objects.create(
+        post = Post.objects.create(
             text='Я нахожусь в подписках',
             author=self.user3)
         response = self.authorized_client.get(reverse('posts:follow_index'))
         posts1 = response.context['page_obj']
-        self.assertFalse(posts1.filter(text='Я нахожусь в подписках',
-                                       author=self.user3).exists())
+        self.assertNotIn(post, posts1)
         Follow.objects.create(user=self.user, author=self.user3)
         response_2 = self.authorized_client.get(reverse('posts:follow_index'))
         posts2 = response_2.context['page_obj']
-        self.assertTrue(posts2.filter(text='Я нахожусь в подписках',
-                                      author=self.user3).exists())
+        self.assertIn(post, posts2)
