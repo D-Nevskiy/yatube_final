@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load user_filters %}
+{% load thumbnail %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+{% endblock %}
+{% block title %}
+    {% if is_edit %}
+        <title>Редактирование поста</title>
+    {% else %}
+        <title>Новый пост</title>
+    {% endif %}
+{% endblock %}
+{% block content %}
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 p-5">
+                <div class="card">
+                    <div class="card-header">
+                        {% if is_edit %}
+                            Редактировать запись
+                        {% else %}
+                            Добавить запись
+                        {% endif %}
+                    </div>
+                    {% if form.errors %}
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger">
+                                    {{ error|escape }}
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {{ error|escape }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    {% if is_edit %}
+                        <form method="post"
+                              enctype="multipart/form-data"
+                              action="{% url 'posts:post_edit' post.pk %}">
+                    {% else %}
+                        <form method="post"
+                              enctype="multipart/form-data"
+                              action="{% url 'posts:post_create' %}">
+                    {% endif %}
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-group row my-3 p-3"
+                                {% if field.field.required %}
+                             aria-required="true" {% else %}
+                             aria-required="false" {% endif %}>
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label }}
+                                {% if field.field.required %}
+                                    <span class="required text-danger">*</span>
+                                {% endif %}
+                            </label>
+                            {% if is_edit %}
+                                {% if field.html_name == "text" %}
+                                    <textarea name="text" cols="40" rows="10"
+                                              class="form-control" required
+                                              id="id_text">{{ post.text }}</textarea>
+                                {% endif %}
+                                {% if field.html_name == "group" %}
+                                    <select name="group" class="form-control"
+                                            id="id_group">
+                                        <option value={{ form.group }}</option>
+                                    </select>
+                                {% endif %}
+                                {% if field.html_name == "image" %}
+                                    {% thumbnail post.image "960x339" crop="center" upscale=True as im %}
+                                        <a href="{{ im.url }}">{{ im.url }}</a>
+                                    {% endthumbnail %}
+                                    <input type="checkbox" name="image-clear"
+                                           id="image-clear_id">
+                                    <label for="image-clear_id">Очистить</label>
+                                    <input type="file" name="image"
+                                           accept="image/*"
+                                           class="form-control" id="id_image">
+                                {% endif %}
+                            {% else %}
+                                {{ field|addclass:'form-control' }}
+                            {% endif %}
+                            {% if field.help_text %}
+                                <small id="{{ field.id_for_label }}-help"
+                                       class="form-text text-muted">
+                                    {{ field.help_text|safe }}
+                                </small>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <div class="col-md-6 offset-md-10">
+                        <button type="submit" class="btn btn-primary">
+                            {% if is_edit %}
+                                Сохранить
+                            {% else %}
+                                Добавить
+                            {% endif %}
+                        </button>
+                    </div>
+                    </form>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

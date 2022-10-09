@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load cache %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+{% endblock %}
+{% block title %}
+    <title>Последние обновления на сайте</title>
+{% endblock %}
+{% block content %}
+    <div class="container py-5">
+        {% include 'includes/switcher.html' %}
+        <h1>Последние обновления на сайте</h1>
+        <article>
+            {% cache 1 index_page %}
+                {% for post in page_obj %}
+                    {% include 'includes/post.html' %}
+                {% endfor %}
+                {% include 'posts/includes/paginator.html' %}
+                </article>
+                </div>
+            {% endcache %}
+{% endblock %}

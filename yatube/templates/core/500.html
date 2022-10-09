@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+{% endblock %}
+{% block title %}
+    <title>Ошибка!</title>
+{% endblock %}
+{% block content %}
+        <div class="container py-5">
+    <h1>Custom 500</h1>
+  <a href="{% url 'posts:index' %}">Идите на главную</a>
+        </div>
+{% endblock %}
