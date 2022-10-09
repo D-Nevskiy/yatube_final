@@ -13,7 +13,7 @@
         <h1>Лента автора:</h1>
         <article>
             {% cache 20 index_page %}
-                {% for post in post_list %}
+                {% for post in page_obj %}
                     {% include 'includes/post.html' %}
                 {% endfor %}
                 {% include 'posts/includes/paginator.html' %}

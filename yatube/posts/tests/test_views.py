@@ -222,11 +222,11 @@ class FollowTest(TestCase):
             text='Я нахожусь в подписках',
             author=self.user3)
         response = self.authorized_client.get(reverse('posts:follow_index'))
-        posts1 = response.context['post_list']
+        posts1 = response.context['page_obj']
         self.assertFalse(posts1.filter(text='Я нахожусь в подписках',
                                        author=self.user3).exists())
         Follow.objects.create(user=self.user, author=self.user3)
         response_2 = self.authorized_client.get(reverse('posts:follow_index'))
-        posts2 = response_2.context['post_list']
+        posts2 = response_2.context['page_obj']
         self.assertTrue(posts2.filter(text='Я нахожусь в подписках',
                                       author=self.user3).exists())
