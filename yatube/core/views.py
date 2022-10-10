@@ -13,5 +13,5 @@ def page_500(request):
     return render(request, 'core/505.html')
 
 
-def page_403(request):
+def page_403(request, exception):
     return render(request, 'core/403.html')

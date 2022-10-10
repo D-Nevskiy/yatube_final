@@ -26,7 +26,6 @@ def group_posts(request, slug):
 def profile(request, username):
     author = get_object_or_404(User, username=username)
     page_obj = paginator(Post.objects.filter(author=author), request)
-    count = Post.objects.filter(author=author).count()
     following = (request.user.is_authenticated
                  and Follow.objects.filter(
                      user=request.user,
@@ -34,7 +33,6 @@ def profile(request, username):
     context = {
         'author': author,
         'page_obj': page_obj,
-        'count': count,
         'following': following,
     }
     return render(request, 'posts/profile.html', context)
@@ -42,18 +40,12 @@ def profile(request, username):
 
 def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    author = post.author
-    count = Post.objects.filter(author=author).count()
     check = True if request.user == post.author else False
-    comments = post.comments.all()
     form = CommentForm()
     context = {
         'post': post,
-        'author': author,
-        'count': count,
         'check': check,
         'form': form,
-        'comments': comments,
     }
     return render(request, 'posts/post_detail.html', context)
 
@@ -126,5 +118,6 @@ def profile_follow(request, username):
 @login_required
 def profile_unfollow(request, username):
     user = request.user
-    Follow.objects.filter(user=user, author__username=username).delete()
+    if Follow.objects.filter(user=user, author__username=username).exists():
+        Follow.objects.filter(user=user, author__username=username).delete()
     return redirect("posts:profile", username=username)
