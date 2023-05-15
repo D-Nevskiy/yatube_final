@@ -26,10 +26,9 @@ SECRET_KEY = '69(=t53)vnsy7w@kxs-jyrxupz-8s6yx7j0%0@&+%x0@%bg_=g'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'localhost',
+    'www.DNevskiy.pythonanywhere.com',
+    'DNevskiy.pythonanywhere.com',
     '127.0.0.1',
-    '[::1]',
-    'testserver',
 ]
 
 LOGIN_URL = 'users:login'
@@ -51,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'sorl.thumbnail',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -61,6 +61,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+]
+
+INTERNAL_IPS = [
+    '127.0.0.1',
 ]
 
 ROOT_URLCONF = 'yatube.urls'
@@ -133,8 +138,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
